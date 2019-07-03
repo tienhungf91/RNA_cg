@@ -1,3 +1,5 @@
+# Source taken from VMD
+
 #include "largefiles.h"
 #include "fastio.h"
 #include <stdlib.h>
