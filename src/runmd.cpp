@@ -33,7 +33,7 @@
 #include "debug.h"
 #include "mem.h"
 #include "EW.h"
-#include "../analysis/analysis.h"
+#include "analysis.h"
 #include "time.h"
 
 ////////////////////////////////////////////////////////////////////////
