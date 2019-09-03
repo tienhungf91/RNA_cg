@@ -10,3 +10,5 @@ Here is an example of how to run a code for BWYV. Input files include:
 Running the simulation in 1mM Mg2+ and 100mM KCl ($bin points to the folder storing the code):
 
    runmd -p 1l2x.pdb -b hbond.dat -k stack.dat -m $bin/src/maxi_explicit -u $bin/uvv/pmf_Mg_P_1264 -T 25 -M 0.001 -K 0.1 -s 5000000000 -v "700 700 700" -a 20000 -e 20000 -C 30 -S $RANDOM -z 29 -d 10
+   
+For post-processing (calculate Gamma ...), need to recalculate the concentration of Mg2+, the 1mM input value is just an estimate.
