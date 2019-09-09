@@ -449,7 +449,7 @@ void gen_con_matrix (_topol_struct &topol_struct,
         /// RI - RI
         _Bead ri = mol_cg.res[i].bead[1];
 
-        if (not ph.name.empty() && not ter) {
+        if (not ri.name.empty() && not ter) {
             _Bead ri2 = mol_cg.res[i+1].bead[1];
             if (not ri2.name.empty()) {
                 topol_struct.con_matrix [ri.index][ri2.index] = 1;
