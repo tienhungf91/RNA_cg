@@ -161,7 +161,8 @@ void initialize_unprocessed_bonds (char * file_unprocessed_bonds,
 
     fseek (f1, 0L, SEEK_SET);
     int bp_N = 0;
-    long position;
+    long position = ftell (f1);
+
     while (position < finish) {
         bp_N ++;
         char A1 [10];
