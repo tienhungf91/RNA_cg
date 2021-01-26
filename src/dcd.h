@@ -1,4 +1,4 @@
-# Source taken from VMD
+// Source taken from VMD
 
 #include "largefiles.h"
 #include "fastio.h"
