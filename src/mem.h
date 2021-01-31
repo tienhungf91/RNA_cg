@@ -117,8 +117,8 @@ void allocate_mem (_topol_struct           &topol_struct,
     coord_vel_force_struct.flz        = (double *) calloc (topol_struct.Natm + 1, sizeof(double));
 
     // Make it a multiple of 6
-    int tmp = topol_struct.Natm % 6;
-    coord_vel_force_struct.maxwell_force.resize (topol_struct.Natm - tmp + 7, 0);
+    int tmp = (3*topol_struct.Natm) % 6;
+    coord_vel_force_struct.maxwell_force.resize (3*topol_struct.Natm - tmp + 7, 0);
 }
 
 ////////////////////////////////////////////////////////////////

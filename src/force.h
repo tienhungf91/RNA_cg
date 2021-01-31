@@ -860,12 +860,12 @@ void full_forces (const _topol_struct     &topol_struct,
 
     for (int i = 1; i <= topol_struct.Natm; i++) {
         int j = topol_struct.maxi_key [i];
-        int a_third = topol_struct.Natm / 3;
-        int k = i % a_third;
+        //int a_third = topol_struct.Natm / 3;
+        //int k = i % a_third;
 
-        coord_vel_force_struct.forcex [i] += coord_vel_force_struct.maxwell_force [k + 1] * topol_struct.SIGMA_FORCE [j];
-        coord_vel_force_struct.forcey [i] += coord_vel_force_struct.maxwell_force [k + a_third + 1] * topol_struct.SIGMA_FORCE [j];
-        coord_vel_force_struct.forcez [i] += coord_vel_force_struct.maxwell_force [k + 2*a_third + 1] * topol_struct.SIGMA_FORCE [j];
+        coord_vel_force_struct.forcex [i] += coord_vel_force_struct.maxwell_force [i] * topol_struct.SIGMA_FORCE [j];
+        coord_vel_force_struct.forcey [i] += coord_vel_force_struct.maxwell_force [i + topol_struct.Natm] * topol_struct.SIGMA_FORCE [j];
+        coord_vel_force_struct.forcez [i] += coord_vel_force_struct.maxwell_force [i + 2*topol_struct.Natm] * topol_struct.SIGMA_FORCE [j];
     }
 }
 
