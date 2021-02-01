@@ -123,9 +123,9 @@ void update_pmf_ion_P_implicit (std::vector<double> &pair_potential,
 double compute_force_ion_P (const std::vector<double> &pair_potential,
                             double r, double &E_Q) {
     double d = 40 * (r - pair_potential [0]); // 40 = 1/0.025
-    int i = std::floor (d) + 1;
+    int i = std::ceil (d);
     if (i > 1) {
-        double r1 = pair_potential [0] + i*0.025;
+        double r1 = pair_potential [0] + (i - 1)*0.025;
         double slope = 40 * (pair_potential [i+1] - pair_potential [i]);  // 40 = 1/0.025
         E_Q += pair_potential [i] + slope * (r - r1);
         return -slope;
