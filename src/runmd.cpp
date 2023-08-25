@@ -555,6 +555,7 @@ int main (int argc, char * argv []) {
 //    topol_struct.INDX = (int *) calloc (topol_struct.Natm_biomol + 1, sizeof(int));
 //    topol_struct.JNDX = (int *) calloc (topol_struct.Natm_biomol + 1, sizeof(int));
     if (not simu_struct.fix_solute) {
+        hydbond_struct.eval = 1;
         initialize_HB_atoms (mol_cg, topol_struct, hydbond_struct);
         if (file_unprocessed_bonds != NULL)
             initialize_unprocessed_bonds (file_unprocessed_bonds, mol_cg, topol_struct, hydbond_struct, coord_vel_force_struct);
