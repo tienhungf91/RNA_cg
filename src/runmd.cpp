@@ -142,7 +142,8 @@ void deterministic_forces (const std::vector<_Res_cg> &res,
     non_bonded_interaction (simu_struct, topol_struct, coord_vel_force_struct, energy_struct);
     polymer_constraints (simu_struct.box, res, topol_struct, coord_vel_force_struct, energy_struct);
     stacking_interactions (topol_struct, coord_vel_force_struct, stack_struct, energy_struct);
-    hydrogen_bonds_interactions (coord_vel_force_struct, hydbond_struct, simu_struct.temp, energy_struct, myseed);
+    if (hydbond_struct.eval)
+        hydrogen_bonds_interactions (coord_vel_force_struct, hydbond_struct, simu_struct.temp, energy_struct, myseed);
 }
 
 
@@ -648,7 +649,8 @@ int main (int argc, char * argv []) {
 
     if (simu_struct.progress == 0 && simu_struct.fix_solute == 0) {
         populate_lists (simu_struct, topol_struct, coord_vel_force_struct);
-        update_list_hydbond (simu_struct, topol_struct, hydbond_struct);
+        if (hydbond_struct.eval)
+            update_list_hydbond (simu_struct, topol_struct, hydbond_struct);
 
 //        prepare_kosinus_sinus (topol_struct, EW_struct, coord_vel_force_struct);
         deterministic_forces (mol_cg.res, simu_struct, topol_struct, hydbond_struct, stack_struct, coord_vel_force_struct, energy_struct, &myseed);
@@ -728,7 +730,7 @@ int main (int argc, char * argv []) {
     }
 
     populate_lists (simu_struct, topol_struct, coord_vel_force_struct);
-    if (simu_struct.fix_solute == 0) update_list_hydbond (simu_struct, topol_struct, hydbond_struct);
+    if (simu_struct.fix_solute == 0 and hydbond_struct.eval) update_list_hydbond (simu_struct, topol_struct, hydbond_struct);
 //    simu_struct.relist_step = 0;
 
     double wall_time0 = get_wall_time ();
@@ -836,7 +838,8 @@ int main (int argc, char * argv []) {
     free (topol_struct.atom_key);
 
     free_stacks (stack_struct);
-    free_hydrogen_bonds (topol_struct, hydbond_struct);
+    if (hydbond_struct.eval)
+        free_hydrogen_bonds (topol_struct, hydbond_struct);
 
    // free (coord_vel_force_struct.coordx);
    // free (coord_vel_force_struct.coordy);

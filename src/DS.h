@@ -295,6 +295,7 @@ struct _crowder_struct {
 
 ////////////////////////////////////////////////////
 struct _stack_struct {
+    bool eval;
     //Stacks
     double st_D; //adjustment for tertiary stacks
     double ss_D; //adjustment for secondary stacks
@@ -336,6 +337,7 @@ struct _stack_struct {
 
 ////////////////////////////////////////////////////////
 struct _hydbond_struct {
+    bool eval;
     //Hydrogen bonds
     double hs_D;
     int hb_N;
