@@ -249,6 +249,7 @@ int main (int argc, char * argv []) {
     hydbond_struct.ATOM_HB   = NULL;
     hydbond_struct.HB_PAIR   = NULL;
     hydbond_struct.weight_nonnative = 1.0;
+    hydbond_struct.eval = 0;
 
     energy_struct.E_BOND     = 0;
     energy_struct.E_ANGLE    = 0;
@@ -556,11 +557,11 @@ int main (int argc, char * argv []) {
 //    topol_struct.INDX = (int *) calloc (topol_struct.Natm_biomol + 1, sizeof(int));
 //    topol_struct.JNDX = (int *) calloc (topol_struct.Natm_biomol + 1, sizeof(int));
     if (not simu_struct.fix_solute) {
-        hydbond_struct.eval = 1;
-        initialize_HB_atoms (mol_cg, topol_struct, hydbond_struct);
-        if (file_unprocessed_bonds != NULL)
+        if (file_unprocessed_bonds != NULL) {
+            hydbond_struct.eval = 1;
+            initialize_HB_atoms (mol_cg, topol_struct, hydbond_struct);
             initialize_unprocessed_bonds (file_unprocessed_bonds, mol_cg, topol_struct, hydbond_struct, coord_vel_force_struct);
-
+        }
         initialize_unprocessed_stacks (file_unprocessed_stacks, mol_aa, mol_cg, topol_struct, stack_struct, coord_vel_force_struct, simu_struct.temp);
     }
 
