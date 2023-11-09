@@ -367,7 +367,7 @@ void check_shifts (_simu_struct                  &simu_struct,
 //    if (simu_struct.relist > simu_struct.dr1 || simu_struct.relist_step == NSTEP_RELIST) {
     if (simu_struct.relist > simu_struct.dr1) {
         populate_lists (simu_struct, topol_struct, coord_vel_force_struct);
-        if (simu_struct.fix_solute == 0) update_list_hydbond (simu_struct, topol_struct, hydbond_struct);
+        if (simu_struct.fix_solute == 0 && hydbond_struct.eval) update_list_hydbond (simu_struct, topol_struct, hydbond_struct);
         simu_struct.relist = 0;
 //        simu_struct.relist_step = 0;
     }
