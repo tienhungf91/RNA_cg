@@ -21,16 +21,13 @@ void separate_in_cells (_simu_struct &simu_struct,
     }
 
     // Divide simulation boxes into cells, separated by AT LEAST electrostatic cutoff distance
-//    simu_struct.Mc.x = (int) floor (simu_struct.box[0] / simu_struct.R1_LIST [1]);
-    simu_struct.Mc.x = (int) floor (simu_struct.box[0] / simu_struct.R1_LIST);
+    simu_struct.Mc.x = (int) ceil (simu_struct.box[0] / simu_struct.R1_LIST);
     double lX = simu_struct.box[0] / simu_struct.Mc.x;
 
-//    simu_struct.Mc.y = (int) floor (simu_struct.box[1] / simu_struct.R1_LIST [1]);
-    simu_struct.Mc.y = (int) floor (simu_struct.box[1] / simu_struct.R1_LIST);
+    simu_struct.Mc.y = (int) ceil (simu_struct.box[1] / simu_struct.R1_LIST);
     double lY = simu_struct.box[1] / simu_struct.Mc.y;
 
-//    simu_struct.Mc.z = (int) floor (simu_struct.box[2] / simu_struct.R1_LIST [1]);
-    simu_struct.Mc.z = (int) floor (simu_struct.box[2] / simu_struct.R1_LIST);
+    simu_struct.Mc.z = (int) ceil (simu_struct.box[2] / simu_struct.R1_LIST);
     double lZ = simu_struct.box[2] / simu_struct.Mc.z;
 
     simu_struct.Mc_total = simu_struct.Mc.x * simu_struct.Mc.y * simu_struct.Mc.z;
@@ -80,7 +77,6 @@ void separate_in_cells (_simu_struct &simu_struct,
 
         simu_struct.cell_content [index] = (int *) realloc (simu_struct.cell_content [index], (simu_struct.cell_mass [index] + 1) * sizeof(int));
         simu_struct.cell_content [index] [simu_struct.cell_mass [index]] = i;    // cell_content stores which atoms (by the atom index) are in each cell
-//        simu_struct.cell_content [index].push_back (i);
     }
 }
 
@@ -235,56 +231,6 @@ void populate_lists (_simu_struct                  &simu_struct,
                             int i2 = simu_struct.cell_content [J2][j2];
 //                            n2 = topol_struct.part_key [i2];
                             fill_neighbor_list (i1, i2, simu_struct, topol_struct, coord_vel_force_struct);
-
-                            ///////////////////////////////////////////////////////
-                            /*double vec [3];
-                            CC_vector (i1, i2, simu_struct.box, coord_vel_force_struct, vec);
-                            double r2 = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-
-                            // Electrostatic
-                            if (r2 <= simu_struct.R2_LIST && (m1 == 1 || m1 >= 7) && (m2 == 1 || m2 >= 7) && \
-                                not std::binary_search (topol_struct.bead_zeroQ.begin(), topol_struct.bead_zeroQ.end(), i1) && \
-                                not std::binary_search (topol_struct.bead_zeroQ.begin(), topol_struct.bead_zeroQ.end(), i2)) {
-                                simu_struct.DHneighborlist_mass += 2;
-                                simu_struct.DHneighborlist.push_back (i1);
-                                simu_struct.DHneighborlist.push_back (i2);
-                            }
-
-                            // LJ, excluding ion-P
-                            // This list is built in order to monitor putative hydbonds formed during the course of simulation
-                            // 10A cutoff is considered safe
-                            int k;
-                            if (m1 < m2)
-                                 k = (m1 - 1) * NA - (m1 - 1) * m1 / 2 + m2;
-                            else k = (m2 - 1) * NA - (m2 - 1) * m2 / 2 + m1;
-
-                            double HB_cutoff = 10. + simu_struct.dr1;
-
-                            if (r2 <= HB_cutoff*HB_cutoff && topol_struct.con_matrix [i1][i2] == 0 && \
-                                not ((m1 == 1 && m2 >= 7) || (m1 >= 7 && m2 == 1))) {
-                                simu_struct.HBneighborlist_mass += 2;
-                                simu_struct.HBneighborlist.push_back (i1);
-                                simu_struct.HBneighborlist.push_back (i2);
-                            }*/
-
-                            // Short-ranged interactions
-/*                            if (r2 <= simu_struct.R2_LIST [0]) {
-//                                simu_struct.list_mass [0] += 2; // list_mass stores how many particles involving in interactions (0 - SR; 1 - LR)
-                                simu_struct.list_mass_SR += 2;
-//                                simu_struct.list_content [0][simu_struct.list_mass [0] - 1] = i1; // list_content stores pairs of particles involving
-//                                simu_struct.list_content [0][simu_struct.list_mass [0]]     = i2;
-                                simu_struct.list_content_SR.push_back (i1);
-                                simu_struct.list_content_SR.push_back (i2);
-
-                            // Long-ranged interactions
-                            } else if (r2 <= simu_struct.R2_LIST [1] && n1 != 1 && n1 != 2 && n2 != 1 && n2 != 2) {
-//                                simu_struct.list_mass [1] += 2;
-                                simu_struct.list_mass_LR += 2;
-//                                simu_struct.list_content [1][simu_struct.list_mass [1] - 1] = i1; 
-//                                simu_struct.list_content [1][simu_struct.list_mass [1]]     = i2;
-                                simu_struct.list_content_LR.push_back (i1);
-                                simu_struct.list_content_LR.push_back (i2);
-                            }*/
                         }
                     }
                 }
@@ -298,48 +244,6 @@ void populate_lists (_simu_struct                  &simu_struct,
                         int i2 = simu_struct.cell_content [J1][j2];
                         // int n2 = topol_struct.part_key [i2];
                         fill_neighbor_list (i1, i2, simu_struct, topol_struct, coord_vel_force_struct);
-
-                        /*double vec [3];
-                        CC_vector (i1, i2, simu_struct.box, coord_vel_force_struct, vec);
-                        double r2 = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-
-                        // Electrostatic
-                        if (r2 <= simu_struct.R2_LIST && (m1 == 1 || m1 >= 7) && (m2 == 1 || m2 >= 7)) {
-                            simu_struct.DHneighborlist_mass += 2;
-                            simu_struct.DHneighborlist.push_back (i1);
-                            simu_struct.DHneighborlist.push_back (i2);
-                        }
-
-                        // LJ, excluding ion-P
-                        int k;
-                        if (m1 < m2)
-                             k = (m1 - 1) * NA - (m1 - 1) * m1 / 2 + m2;
-                        else k = (m2 - 1) * NA - (m2 - 1) * m2 / 2 + m1;
-
-                        double HB_cutoff = 10. + simu_struct.dr1;
-
-                        if (r2 <= HB_cutoff*HB_cutoff && topol_struct.con_matrix [i1][i2] == 0 && \
-                            not ((m1 == 1 && m2 >= 7) || (m1 >= 7 && m2 == 1))) {
-                            simu_struct.HBneighborlist_mass += 2;
-                            simu_struct.HBneighborlist.push_back (i1);
-                            simu_struct.HBneighborlist.push_back (i2);
-                        }*/
-
-/*                        if (r2 <= simu_struct.R2_LIST [0]) {
-//                            simu_struct.list_mass [0] += 2;
-                            simu_struct.list_mass_SR += 2;
-//                            simu_struct.list_content [0][simu_struct.list_mass [0] - 1] = i1;
-//                            simu_struct.list_content [0][simu_struct.list_mass [0]]     = i2;
-                            simu_struct.list_content_SR.push_back (i1);
-                            simu_struct.list_content_SR.push_back (i2);
-                        } else if (r2 <= simu_struct.R2_LIST [1] && n1 != 1 && n1 != 2 && n2 != 1 && n2 != 2) {
-//                            simu_struct.list_mass [1] += 2;
-                            simu_struct.list_mass_LR += 2;
-//                            simu_struct.list_content [1][simu_struct.list_mass [1] - 1] = i1;
-//                            simu_struct.list_content [1][simu_struct.list_mass [1]]     = i2;
-                            simu_struct.list_content_LR.push_back (i1);
-                            simu_struct.list_content_LR.push_back (i2);
-                        }*/
                     }
                 }
             }

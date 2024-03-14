@@ -97,6 +97,17 @@ void usage () {
     return ONE_THIRD * temp / (topol_struct.Natm * KELVIN_TO_KT);
 }*/
 
+void set_energy_zero (_energy_struct &energy_struct) {
+    energy_struct.E_BOND = 0;
+    energy_struct.E_ANGLE = 0;
+    energy_struct.E_EXCLUDED = 0;
+    energy_struct.E2_HB = 0;
+    energy_struct.E3_HB = 0;
+    energy_struct.E2_STACK = 0;
+    energy_struct.E3_STACK = 0;
+    energy_struct.E_Q = 0;
+}
+
 ///////////////////////////////////////////////////////////////
 void deterministic_forces (const std::vector<_Res_cg> &res,
                            _simu_struct            &simu_struct,
@@ -106,18 +117,11 @@ void deterministic_forces (const std::vector<_Res_cg> &res,
                            _coord_vel_force_struct &coord_vel_force_struct,
                            _energy_struct          &energy_struct,
                            unsigned int            *myseed) {
+
 //                           const _EW_struct        &EW_struct) {
 
-    energy_struct.E_BOND = 0;
-    energy_struct.E_ANGLE = 0;
-    energy_struct.E_EXCLUDED = 0;
-    energy_struct.E2_HB = 0;
-    energy_struct.E3_HB = 0;
-    energy_struct.E2_STACK = 0;
-    energy_struct.E3_STACK = 0;
-    energy_struct.E_Q = 0;
-
-/*    if (simu_struct.relist_step % simu_struct.LR_skip == 0) {
+    set_energy_zero (energy_struct);
+    /*    if (simu_struct.relist_step % simu_struct.LR_skip == 0) {
         for (int i = 1; i <= topol_struct.Natm; i++) {
             coord_vel_force_struct.flx [i] = 0;
             coord_vel_force_struct.fly [i] = 0;
@@ -644,6 +648,7 @@ int main (int argc, char * argv []) {
 //    FILE * f_error;
 //    f_error = fopen (file_error, "w");
 
+    set_energy_zero (energy_struct);
     double test = simu_struct.D_CUTOFF - 0.01;
     printf ("Electrostatic force  at %6.1f A: %16.8e\n", simu_struct.D_CUTOFF, DEBYE_HUCKEL_FORCE (test, simu_struct.kappaD, topol_struct.E_DH [1], simu_struct.D_CUTOFF, energy_struct.E_Q));
     printf ("Electrostatic energy at %6.1f A: %16.8e\n", simu_struct.D_CUTOFF, energy_struct.E_Q);
@@ -699,6 +704,7 @@ int main (int argc, char * argv []) {
                     coord_vel_force_struct.forcey [i] = 0;
                     coord_vel_force_struct.forcez [i] = 0;
                 }
+                set_energy_zero (energy_struct);
                 non_bonded_interaction (simu_struct, topol_struct, coord_vel_force_struct, energy_struct);
                 full_forces (topol_struct, coord_vel_force_struct, &myseed);
                 move_crowders (simu_struct, topol_struct, coord_vel_force_struct);
@@ -708,6 +714,7 @@ int main (int argc, char * argv []) {
         }
 
     } else if (simu_struct.fix_solute && simu_struct.debug) {
+        set_energy_zero (energy_struct);
         populate_lists (simu_struct, topol_struct, coord_vel_force_struct);
 //        printf ("total interaction  %ld\n", simu_struct.neighborlist_mass);
 //        prepare_kosinus_sinus (topol_struct, EW_struct, coord_vel_force_struct);
@@ -806,6 +813,7 @@ int main (int argc, char * argv []) {
                 coord_vel_force_struct.forcey [i] = 0;
                 coord_vel_force_struct.forcez [i] = 0;
             }
+            set_energy_zero (energy_struct);
             non_bonded_interaction (simu_struct, topol_struct, coord_vel_force_struct, energy_struct);
             full_forces (topol_struct, coord_vel_force_struct, &myseed);
             move_crowders (simu_struct, topol_struct, coord_vel_force_struct);

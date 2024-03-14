@@ -307,6 +307,7 @@ void non_bonded_interaction (_simu_struct            &simu_struct,
                              _coord_vel_force_struct &coord_vel_force_struct,
                              _energy_struct          &energy_struct) {
     /// Electrostatic
+    printf ("DHlist_mass %d\n", simu_struct.DHneighborlist_mass);
     for (int k = 1; k <= simu_struct.DHneighborlist_mass; k += 2) {
         int i = simu_struct.DHneighborlist [k];
         int j = simu_struct.DHneighborlist [k + 1];
